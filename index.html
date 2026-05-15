@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Durhamtown Father's Day Weekend</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+    --purple: #7F77DD; --purple-light: #EEEDFE;
+    --orange: #D85A30; --orange-light: #FAECE7;
+    --pink: #D4537E; --pink-light: #FBEAF0;
+    --amber: #BA7517; --amber-light: #FAEEDA;
+    --blue: #378ADD; --blue-light: #E6F1FB;
+    --red: #A32D2D; --red-light: #FCEBEB;
+    --ink: #1a1a1a; --muted: #6b7280; --border: #e5e7eb;
+    --surface: #f9f9f7; --white: #ffffff; --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); min-height: 100vh; }
+
+  .hero { background: var(--green-dark); padding: 2.5rem 1.5rem 2rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(255,255,255,0.03) 18px, rgba(255,255,255,0.03) 36px); }
+  .hero-inner { position: relative; max-width: 680px; margin: 0 auto; }
+  .hero-eye { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 0.18em; color: var(--green); margin-bottom: 8px; }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 10vw, 72px); line-height: 0.95; color: white; margin-bottom: 6px; }
+  .hero h1 span { color: var(--green); }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 1rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); border-radius: 20px; padding: 4px 13px; font-size: 12px; font-weight: 500; }
+
+  .warn-bar { background: var(--red-light); border-bottom: 2px solid #f09595; padding: 10px 1.5rem; }
+  .warn-bar-inner { max-width: 680px; margin: 0 auto; font-size: 13px; color: var(--red); font-weight: 500; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .warn-bar-inner span { font-weight: 400; color: #791F1F; }
+
+  .sync-strip { max-width: 680px; margin: 0 auto; padding: 8px 1rem; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); flex-shrink: 0; transition: background 0.3s; }
+  .sdot.ok { background: var(--green); }
+  .sdot.err { background: var(--red); }
+
+  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 680px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nbtn { flex-shrink: 0; padding: 13px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+  .nbtn.on { color: var(--green); border-bottom-color: var(--green); }
+
+  main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  .tsec { display: none; } .tsec.on { display: block; }
+
+  .stitle { font-family: 'Bebas Neue', sans-serif; font-size: 21px; letter-spacing: 0.05em; margin: 1.5rem 0 0.75rem; display: flex; align-items: center; gap: 10px; }
+  .stitle::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .stitle:first-child { margin-top: 0; }
+
+  .fblock { border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; border: 1px solid; }
+  .fb-d { background: var(--green-light); border-color: #9FE1CB; }
+  .fb-h { background: var(--purple-light); border-color: #AFA9EC; }
+  .fb-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .fb-d .fb-title { color: var(--green-dark); }
+  .fb-h .fb-title { color: #3C3489; }
+  .ftags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .ftag { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
+  .fb-d .ftag { background: rgba(29,158,117,0.15); color: var(--green-dark); }
+  .fb-h .ftag { background: rgba(127,119,221,0.18); color: #3C3489; }
+  .fmem { font-size: 13px; padding: 2px 0; display: flex; align-items: center; gap: 8px; }
+  .fb-d .fmem { color: #0F6E56; } .fb-h .fmem { color: #534AB7; }
+  .fdot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .fdrive { font-size: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.08); }
+  .fb-d .fdrive { color: #0F6E56; } .fb-h .fdrive { color: #534AB7; }
+
+  .igrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .icard { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; }
+  .icard-ico { font-size: 20px; margin-bottom: 5px; }
+  .icard-t { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .icard-b { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .tip { background: var(--green-light); border: 1px solid #9FE1CB; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--green-dark); line-height: 1.55; margin-bottom: 1rem; }
+  .notebox { background: var(--blue-light); border: 1px solid #85B7EB; border-radius: 10px; padding: 9px 13px; font-size: 13px; color: #0C447C; margin-bottom: 10px; line-height: 1.5; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; }
+  .li { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
+  .ldot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .daytabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 1rem; }
+  .dtab { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 9px 5px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; text-align: center; line-height: 1.3; transition: all 0.15s; }
+  .dtab-n { font-family: 'Bebas Neue', sans-serif; font-size: 18px; display: block; line-height: 1; margin-bottom: 2px; color: var(--ink); }
+  .dtab.on { background: var(--green); border-color: var(--green); color: white; }
+  .dtab.on .dtab-n { color: white; }
+  .dp { display: none; } .dp.on { display: block; }
+
+  .dlabel { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; margin-top: 6px; }
+  .dl-d { background: var(--green-light); color: var(--green-dark); }
+  .dl-h { background: var(--purple-light); color: #3C3489; }
+  .dl-b { background: var(--blue-light); color: #185FA5; }
+
+  .tl { position: relative; padding-left: 24px; margin-bottom: 1.25rem; }
+  .tl::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 1.5px; background: var(--border); border-radius: 2px; }
+  .tli { position: relative; margin-bottom: 10px; }
+  .tldot { position: absolute; left: -20px; top: 5px; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--surface); }
+  .tltime { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px; color: var(--green); }
+  .tltime.th { color: var(--purple); }
+  .tlcard { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 9px 13px; }
+  .tlcard.ch { background: var(--purple-light); border-color: #AFA9EC; }
+  .tlcard.cn { background: var(--blue-light); border-color: #85B7EB; }
+  .tlcard.cm { background: var(--amber-light); border-color: #FAC775; }
+  .tlcard.cx { background: var(--red-light); border-color: #F09595; border-left: 3px solid var(--red); }
+  .tltitle { font-size: 13px; font-weight: 600; margin-bottom: 2px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; }
+  .ch .tltitle { color: #3C3489; } .cn .tltitle { color: #0C447C; }
+  .cm .tltitle { color: #633806; } .cx .tltitle { color: #791F1F; }
+  .tldet { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .ch .tldet { color: #534AB7; } .cn .tldet { color: #185FA5; }
+  .cm .tldet { color: #854F0B; } .cx .tldet { color: #791F1F; }
+  .mtag { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 6px; margin-top: 4px; background: rgba(255,255,255,0.55); color: #633806; }
+
+  .badge { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 20px; flex-shrink: 0; }
+  .bd { background: var(--green-light); color: var(--green-dark); }
+  .bh { background: var(--purple-light); color: #3C3489; }
+  .ball { background: var(--purple-light); color: #3C3489; }
+  .bdads { background: var(--orange-light); color: #712B13; }
+  .bmoms { background: var(--pink-light); color: #72243E; }
+  .bfood { background: var(--amber-light); color: #633806; }
+  .bnight { background: var(--blue-light); color: #0C447C; }
+  .bcutoff { background: var(--red-light); color: #791F1F; }
+
+  .mday { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+  .mdh { padding: 11px 15px; background: var(--green); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .mdh h3 { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.04em; color: white; }
+  .mdh span { font-size: 11px; color: rgba(255,255,255,0.75); }
+  .mdb { padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+  .mdb.open { max-height: 900px; padding: 12px 15px; }
+  .mrow { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .mrow:last-child { border-bottom: none; }
+  .mtlbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); min-width: 65px; padding-top: 2px; }
+  .mc { flex: 1; }
+  .mn { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .md { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .mbadge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+  .mb-c { background: var(--green-light); color: var(--green-dark); }
+  .mb-g { background: var(--orange-light); color: #712B13; }
+  .mb-cf { background: var(--amber-light); color: #633806; }
+  .mb-r { background: var(--blue-light); color: #0C447C; }
+
+  .pb-wrap { background: var(--border); border-radius: 10px; height: 7px; margin-bottom: 4px; }
+  .pb { background: var(--green); height: 7px; border-radius: 10px; transition: width 0.3s; }
+  .plabel { font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+  .rbtn { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 7px 16px; font-size: 13px; color: var(--muted); cursor: pointer; margin-bottom: 1rem; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .rbtn:hover { border-color: var(--red); color: var(--red); }
+
+  .gcat { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; overflow: hidden; }
+  .gcath { padding: 11px 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .gcath-t { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .gcath-c { font-size: 11px; color: var(--muted); }
+  .gcatb { padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+  .gcatb.open { max-height: 1200px; }
+  .gitem { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: opacity 0.15s; }
+  .gitem:last-child { border-bottom: none; }
+  .gitem.ck { opacity: 0.4; }
+  .gcheck { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .ck .gcheck { background: var(--green); border-color: var(--green); }
+  .gtick { display: none; font-size: 11px; color: white; font-weight: 700; }
+  .ck .gtick { display: block; }
+  .gname { font-size: 13px; flex: 1; }
+  .ck .gname { text-decoration: line-through; color: var(--muted); }
+  .gnote { font-size: 11px; color: var(--muted); }
+  .gqty { font-size: 11px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+
+  .ckcard { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 16px; }
+  .cklist { list-style: none; }
+  .cklist li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); cursor: pointer; }
+  .cklist li:last-child { border-bottom: none; }
+  .cklist li.ck { color: #aaa; text-decoration: line-through; }
+  .ckcircle { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 1px; }
+  .ck .ckcircle { background: var(--green); border-color: var(--green); }
+  .cktick { display: none; font-size: 10px; color: white; font-weight: 700; }
+  .ck .cktick { display: block; }
+
+  .footer { text-align: center; padding: 2rem 1rem 3rem; font-size: 12px; color: #9ca3af; }
+  .footer strong { color: var(--green); }
+
+  @media (max-width: 420px) {
+    .daytabs { grid-template-columns: repeat(2,1fr); }
+    .nbtn { padding: 13px 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eye">June 19–22, 2025 &nbsp;·&nbsp; Union Point, Georgia</div>
+    <h1>Durham<span>town</span><br>Weekend</h1>
+    <p class="hero-sub">Davis &amp; Hornsby families &nbsp;·&nbsp; Father's Day 2025 &nbsp;·&nbsp; 7 people</p>
+    <div class="chips">
+      <span class="chip">🏍️ Dirt bikes + ATVs</span>
+      <span class="chip">🏕️ 2 cabins near lodge</span>
+      <span class="chip">🗺️ 150+ miles of trails</span>
+      <span class="chip">📞 (706) 486-4603</span>
+    </div>
+  </div>
+</div>
+
+<div class="warn-bar">
+  <div class="warn-bar-inner">⚠️ <strong>Trails close 4:30 PM daily</strong> &nbsp;·&nbsp; <span>Lodge 8 AM–6 PM &nbsp;·&nbsp; No new loops after 2:30 PM</span></div>
+</div>
+
+<div class="sync-strip">
+  <div class="sdot" id="sdot"></div>
+  <span id="slabel">Connecting...</span>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <button class="nbtn on" onclick="showSec('overview',this)">Overview</button>
+    <button class="nbtn" onclick="showSec('schedule',this)">Schedule</button>
+    <button class="nbtn" onclick="showSec('meals',this)">Meals</button>
+    <button class="nbtn" onclick="showSec('grocery',this)">Grocery</button>
+    <button class="nbtn" onclick="showSec('checklist',this)">Checklist</button>
+  </div>
+</div>
+
+<main>
+
+<!-- OVERVIEW -->
+<div id="overview" class="tsec on">
+  <div class="stitle">Davis Family</div>
+  <div class="fblock fb-d">
+    <div class="fb-title">🟢 Davis Family</div>
+    <div class="ftags"><span class="ftag">Tallahassee, FL</span><span class="ftag">Leave Thu 5 PM</span><span class="ftag">Arrive ~9 PM</span></div>
+    <div class="fmem"><span class="fdot" style="background:#1D9E75"></span>Mom — 2-seater ATV (youngest pillion)</div>
+    <div class="fmem"><span class="fdot" style="background:#1D9E75"></span>Dad — dirt bike</div>
+    <div class="fmem"><span class="fdot" style="background:#1D9E75"></span>Daughter — her own ATV</div>
+    <div class="fmem"><span class="fdot" style="background:#1D9E75"></span>Son (8) — pillion on mom's ATV</div>
+    <div class="fdrive">🚗 ~3.5–4 hr drive. Leaving at 5 PM = arriving ~8:30–9 PM. Budget one gas stop pulling a trailer. Confirm late check-in with Durhamtown before leaving.</div>
+  </div>
+  <div class="stitle">Hornsby Family</div>
+  <div class="fblock fb-h">
+    <div class="fb-title">🟣 Hornsby Family</div>
+    <div class="ftags"><span class="ftag">Ochlocknee, GA</span><span class="ftag">Leave Thu morning</span><span class="ftag">Arrive early afternoon</span></div>
+    <div class="fmem"><span class="fdot" style="background:#7F77DD"></span>Mom — 2-seater ATV (son pillion)</div>
+    <div class="fmem"><span class="fdot" style="background:#7F77DD"></span>Dad — dirt bike</div>
+    <div class="fmem"><span class="fdot" style="background:#7F77DD"></span>Son (8) — pillion on mom's ATV</div>
+    <div class="fdrive">🚗 ~2.5–3 hr drive. Morning departure = arriving early-mid afternoon with daylight. Scout trails, confirm café hours, and be the advance team for Davis family.</div>
+  </div>
+  <div class="stitle">Key Info</div>
+  <div class="igrid">
+    <div class="icard"><div class="icard-ico">🏕️</div><div class="icard-t">Cabins</div><div class="icard-b">2-bed, private bath, kitchen, grill + fire ring. Both near each other and the lodge.</div></div>
+    <div class="icard"><div class="icard-ico">☕</div><div class="icard-t">Café</div><div class="icard-b">On-site. Confirm hours for June 19–21 when booking. Sat lunch + possible Sat evening.</div></div>
+    <div class="icard"><div class="icard-ico">🗺️</div><div class="icard-t">Trails</div><div class="icard-b">9 AM–4:30 PM. Green = family/ATV. Red = dirt bike single-track only.</div></div>
+    <div class="icard"><div class="icard-ico">📞</div><div class="icard-t">Contact</div><div class="icard-b">(706) 486-4603 · durhamtown.com</div></div>
+  </div>
+  <div class="tip">💬 Tell Durhamtown you're two families traveling together — request cabins near each other and near the lodge. The two 8-year-olds on pillion side by side will be the memory of the whole trip.</div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="schedule" class="tsec">
+  <div class="legend">
+    <div class="li"><div class="ldot" style="background:#1D9E75"></div>All 7</div>
+    <div class="li"><div class="ldot" style="background:#7F77DD"></div>Hornsby only</div>
+    <div class="li"><div class="ldot" style="background:#D85A30"></div>Dads</div>
+    <div class="li"><div class="ldot" style="background:#D4537E"></div>Moms+kids</div>
+    <div class="li"><div class="ldot" style="background:#BA7517"></div>Food</div>
+    <div class="li"><div class="ldot" style="background:#378ADD"></div>Evening</div>
+  </div>
+  <div class="daytabs">
+    <button class="dtab on" onclick="showDay('thu',this)"><span class="dtab-n">THU</span>Arrival</button>
+    <button class="dtab" onclick="showDay('fri',this)"><span class="dtab-n">FRI</span>Explore</button>
+    <button class="dtab" onclick="showDay('sat',this)"><span class="dtab-n">SAT</span>Adventure</button>
+    <button class="dtab" onclick="showDay('sun',this)"><span class="dtab-n">SUN</span>Father's Day</button>
+  </div>
+
+  <div id="thu" class="dp on">
+    <div class="notebox">Davis family leaves Tallahassee 5 PM, arrives ~9 PM. Hornsby family leaves Ochlocknee in the morning — they scout the property. Thursday is a settle-in night only.</div>
+    <div class="dlabel dl-h">Hornsby Family — morning from Ochlocknee</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#7F77DD"></div><div class="tltime th">Morning</div><div class="tlcard ch"><div class="tltitle">Depart Ochlocknee 🚗 <span class="badge bh">Hornsby</span></div><div class="tldet">~2.5–3 hr drive. Arrive early afternoon with daylight to spare.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#7F77DD"></div><div class="tltime th">Early afternoon</div><div class="tlcard ch"><div class="tltitle">Check in + settle cabin <span class="badge bh">Hornsby</span></div><div class="tldet">Unload, find the lodge (open until 6 PM), grab trail maps.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#7F77DD"></div><div class="tltime th">If arrive by 2:30 PM</div><div class="tlcard ch"><div class="tltitle">Optional orientation loop <span class="badge bh">Hornsby</span></div><div class="tldet">30–45 min beginner loop if settled and time allows. Must return before 4:30 PM. You'll know the best routes before anyone Friday morning.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#7F77DD"></div><div class="tltime th">Before 6:00 PM</div><div class="tlcard ch"><div class="tltitle">Scout lodge + café 🔍 <span class="badge bh">Hornsby</span></div><div class="tldet">Confirm café hours, ask about weekend events, browse the pro shop. Advance team intel saves everyone time Friday.</div></div></div>
+    </div>
+    <div class="dlabel dl-d">Davis Family — 5 PM from Tallahassee</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">By 4:00 PM</div><div class="tlcard"><div class="tltitle">Groceries + pack done <span class="badge bd">Davis</span></div><div class="tldet">Grocery run before departure. Fridge items and overnight bag on top of trailer. Coordinate split list with Hornsbys.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">5:00 PM</div><div class="tlcard"><div class="tltitle">Depart Tallahassee 🚗 <span class="badge bd">Davis</span></div><div class="tldet">~3.5–4 hr drive. One gas/bathroom stop. Kids fed before you leave.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">8:30–9:00 PM</div><div class="tlcard"><div class="tltitle">Arrive + essentials only <span class="badge bd">Davis</span></div><div class="tldet">Fridge stocked, beds set. Full unload in the morning. Hornsbys will point you to your cabin.</div></div></div>
+    </div>
+    <div class="dlabel dl-b">Both families once Davis arrives</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#378ADD"></div><div class="tltime">~9:00 PM</div><div class="tlcard cn"><div class="tltitle">Welcome night 🔥 <span class="badge bnight">together</span></div><div class="tldet">Fire ring, hot dogs, easy snacks. Hornsbys share what they scouted. Early bed — trails open at 9 AM.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">Dinner</div><div class="tlcard cm"><div class="tltitle">Hot dogs + chips + s'mores <span class="badge bfood">grill</span></div><div class="tldet">Fast, easy, no one has to think after a long drive. Fire ring for s'mores to close the night.</div><span class="mtag">Grill · Both families</span></div></div>
+    </div>
+  </div>
+
+  <div id="fri" class="dp">
+    <div class="notebox">Trails 9 AM–4:30 PM. Two group loops in the morning, dads split after lunch. No new loops after 2:30 PM.</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">7:30 AM</div><div class="tlcard cm"><div class="tltitle">Pancakes + bacon — own cabins <span class="badge bfood">breakfast</span></div><div class="tldet">Classic pancakes from mix, crispy bacon. Each family cooks their own. Regroup at lodge 8:30.</div><span class="mtag">Cabin — each family</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">8:30 AM</div><div class="tlcard"><div class="tltitle">Group pre-ride meetup <span class="badge ball">all 7</span></div><div class="tldet">All machines checked. Ask staff for best beginner green-arrow loops. Hornsbys share Thursday trail intel.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">9:00 AM — trails open</div><div class="tlcard"><div class="tltitle">First group loop — ~45 min 🏁 <span class="badge ball">all 7</span></div><div class="tldet">Short orientation loop. Both boys on pillion, daughter on ATV, dads alongside. Slow and exploratory.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">10:30 AM</div><div class="tlcard"><div class="tltitle">Second group loop — 60–90 min <span class="badge ball">all 7</span></div><div class="tldet">Longer green-arrow route. Mild hills + mud — both boys will love it. Photo stop built in.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">12:00 PM</div><div class="tlcard cm"><div class="tltitle">Build-your-own subs — cabin <span class="badge bfood">lunch</span></div><div class="tldet">Deli turkey + ham, provolone + cheddar, hoagie rolls, lettuce, tomato, chips, grapes. Picnic tables together.</div><span class="mtag">Cabin — group picnic</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#D85A30"></div><div class="tltime">1:30 PM</div><div class="tlcard"><div class="tltitle">Dads split off — dirt bike time 🏍️ <span class="badge bdads">dads only</span></div><div class="tldet">Both dads on intermediate trails, their pace. Hard return: 4:15 PM — ~2.5 hr window.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#D4537E"></div><div class="tltime">1:30 PM</div><div class="tlcard"><div class="tltitle">Moms + kids — lodge time <span class="badge bmoms">moms+kids</span></div><div class="tldet">Pro shop, cold drinks, ice cream. Two boys = self-entertaining. Pond walk, track watching, or just sit.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#E24B4A"></div><div class="tltime">4:15 PM — hard stop</div><div class="tlcard cx"><div class="tltitle">⛔ All riders back — trails close 4:30 <span class="badge bcutoff">cutoff</span></div><div class="tldet">Everyone off trails. Daily regroup. Rinse gear, change, decompress.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#378ADD"></div><div class="tltime">6:30 PM</div><div class="tlcard cn"><div class="tltitle">Smash burgers + grilled corn 🍔 <span class="badge bnight">together</span></div><div class="tldet">Smash burgers on brioche, corn on the cob, baked beans. Card-making time for the boys. S'mores after.</div></div></div>
+    </div>
+  </div>
+
+  <div id="sat" class="dp">
+    <div class="notebox">The big day. Dads ride early, moms + kids ride. Café lunch together. Signature group loop in the afternoon. Nothing new after 2:00 PM.</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">7:30 AM</div><div class="tlcard cm"><div class="tltitle">Egg + sausage burritos — own cabins <span class="badge bfood">breakfast</span></div><div class="tldet">Scrambled eggs, breakfast sausage, shredded cheddar in flour tortillas. Pack extra snacks + water for 7.</div><span class="mtag">Cabin — each family</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#D85A30"></div><div class="tltime">9:00 AM — trails open</div><div class="tlcard"><div class="tltitle">Dads' big morning ride 🏍️ <span class="badge bdads">dads only</span></div><div class="tldet">Intermediate or harder trails, single-track if they want it. This is the ride they came for. Return to café by 11:45 AM.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#D4537E"></div><div class="tltime">9:00 AM</div><div class="tlcard"><div class="tltitle">Moms + kids — favorite loop 🏁 <span class="badge bmoms">moms+kids</span></div><div class="tldet">Both ATVs + daughter on Friday's best route. Both 8-year-olds side by side — highlight of the whole weekend.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">12:00 PM</div><div class="tlcard cm"><div class="tltitle">All 7 at the café ☕ <span class="badge bfood">lunch</span></div><div class="tldet">Everyone regroups. Dads swap stories, moms swap stories, everyone talking over each other. The social anchor of Saturday.</div><span class="mtag">On-site café</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">1:00 PM</div><div class="tlcard"><div class="tltitle">Big group adventure loop — all 7 🏆 <span class="badge ball">all 7</span></div><div class="tldet">Longest loop of the weekend, everyone together. Photo stop. The mud hole the boys will talk about for years. ~90 min.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#E24B4A"></div><div class="tltime">4:15 PM — hard stop</div><div class="tlcard cx"><div class="tltitle">⛔ All riders back — trails close 4:30 <span class="badge bcutoff">cutoff</span></div><div class="tldet">Everyone off trails. Last chance to hit the pro shop before lodge closes at 6.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#378ADD"></div><div class="tltime">7:00 PM</div><div class="tlcard cn"><div class="tltitle">Grilled chicken + foil-pack potatoes 🥩 <span class="badge bnight">together</span></div><div class="tldet">Italian-marinated chicken thighs, foil-pack potatoes with garlic butter, grilled peppers + onions, green salad. Or café steak night if running.</div></div></div>
+    </div>
+  </div>
+
+  <div id="sun" class="dp">
+    <div class="notebox">Father's Day. One focused morning ride, pack together, head home with full hearts and very muddy gear.</div>
+    <div class="tl">
+      <div class="tli"><div class="tldot" style="background:#378ADD"></div><div class="tltime">7:30 AM</div><div class="tlcard cn"><div class="tltitle">Father's Day morning — both families 🎁 <span class="badge bnight">together</span></div><div class="tldet">Light breakfast. Both sets of kids do cards and gifts at the same time. Two dads celebrated together makes it a real event.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">7:30 AM</div><div class="tlcard cm"><div class="tltitle">Cereal + fridge cleanout <span class="badge bfood">breakfast</span></div><div class="tldet">Cereal, granola bars, fruit, yogurt pouches. Use what's left. No cooking — packing day.</div><span class="mtag">Cabin — quick</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#D85A30"></div><div class="tltime">9:00 AM — trails open</div><div class="tlcard"><div class="tltitle">Dads' Father's Day ride — their pick 🏍️ <span class="badge bdads">dads only</span></div><div class="tldet">Both dads out together. No plan, their trail, their pace. This is the gift. Back by 10:30.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#D4537E"></div><div class="tltime">9:00 AM</div><div class="tlcard"><div class="tltitle">Moms + kids — victory lap 🏁 <span class="badge bmoms">moms+kids</span></div><div class="tldet">One last short loop on the weekend's favorite trail. The lap you'll all talk about on the drive home.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">10:30 AM</div><div class="tlcard"><div class="tltitle">Pack both cabins together <span class="badge ball">all 7</span></div><div class="tldet">Seven people makes this fast. Help each other load trailers, rinse machines, check out both cabins.</div></div></div>
+      <div class="tli"><div class="tldot" style="background:#BA7517"></div><div class="tltime">12:00–12:30 PM</div><div class="tlcard cm"><div class="tltitle">Last meal — café or road stop 🍽️ <span class="badge bfood">lunch</span></div><div class="tldet">Café Sunday lunch if running (12:30–2:30 historically). Otherwise BBQ on the way south. Dads pick — it's their day.</div><span class="mtag">Café or road</span></div></div>
+      <div class="tli"><div class="tldot" style="background:#1D9E75"></div><div class="tltime">Afternoon</div><div class="tlcard"><div class="tltitle">Head home 🏠</div><div class="tldet">Davis: ~3.5–4 hrs to Tallahassee. Hornsby: ~2.5–3 hrs to Ochlocknee. Kids asleep before the state line.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MEALS -->
+<div id="meals" class="tsec">
+  <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6">Full meal plan for the weekend. Cabin meals are each family's own unless noted as a group meal. Tap a day to expand.</p>
+  <div class="mday"><div class="mdh" onclick="toggleM(this)"><h3>Thursday night</h3><span>1 meal · Arrival night</span></div>
+    <div class="mdb open"><div class="mrow"><div class="mtlbl">Dinner</div><div class="mc"><div class="mn">🌭 Hot dogs + chips + s'mores</div><div class="md">Hot dogs and buns on the grill, potato chips, baby carrots and dip. S'mores at the fire ring. Fast and easy after a long drive.</div><span class="mbadge mb-g">Grill — both families</span></div></div></div>
+  </div>
+  <div class="mday"><div class="mdh" onclick="toggleM(this)"><h3>Friday</h3><span>3 meals · Full riding day</span></div>
+    <div class="mdb">
+      <div class="mrow"><div class="mtlbl">Breakfast</div><div class="mc"><div class="mn">🥞 Pancakes + bacon</div><div class="md">Classic pancakes from mix, crispy bacon, OJ or coffee. Each family cooks their own. Simple and filling before a big riding morning.</div><span class="mbadge mb-c">Cabin — each family</span></div></div>
+      <div class="mrow"><div class="mtlbl">Lunch</div><div class="mc"><div class="mn">🥪 Build-your-own subs</div><div class="md">Deli turkey + ham, provolone + cheddar, hoagie rolls, lettuce, tomato, onion, mayo, mustard. Chips and grapes. Pull picnic tables together.</div><span class="mbadge mb-c">Cabin — group picnic</span></div></div>
+      <div class="mrow"><div class="mtlbl">Dinner</div><div class="mc"><div class="mn">🍔 Smash burgers + grilled corn</div><div class="md">Smash burgers with American cheese, pickles, onion on brioche buns. Corn on the cob with butter. Baked beans from the can. Everyone together.</div><span class="mbadge mb-g">Grill — both families</span></div></div>
+    </div>
+  </div>
+  <div class="mday"><div class="mdh" onclick="toggleM(this)"><h3>Saturday</h3><span>3 meals · Big adventure day</span></div>
+    <div class="mdb">
+      <div class="mrow"><div class="mtlbl">Breakfast</div><div class="mc"><div class="mn">🌯 Egg + sausage breakfast burritos</div><div class="md">Scrambled eggs, cooked breakfast sausage, shredded cheddar in flour tortillas. Make a big batch and wrap them — kids can grab and go.</div><span class="mbadge mb-c">Cabin — each family</span></div></div>
+      <div class="mrow"><div class="mtlbl">Lunch</div><div class="mc"><div class="mn">☕ Durhamtown café</div><div class="md">The one meal this weekend you don't cook. Saturday service has historically run through 2 PM. Confirm hours when booking.</div><span class="mbadge mb-cf">On-site café — all 7</span></div></div>
+      <div class="mrow"><div class="mtlbl">Dinner</div><div class="mc"><div class="mn">🥩 Grilled chicken thighs + foil-pack potatoes</div><div class="md">Chicken thighs marinated in Italian dressing (do Friday evening). Foil packs: sliced potatoes, butter, garlic — grill 25 min. Grilled peppers + onions, green salad. If café has Sat steak night, go there instead.</div><span class="mbadge mb-g">Grill — both families</span></div></div>
+    </div>
+  </div>
+  <div class="mday"><div class="mdh" onclick="toggleM(this)"><h3>Sunday</h3><span>2 meals · Pack-up day</span></div>
+    <div class="mdb">
+      <div class="mrow"><div class="mtlbl">Breakfast</div><div class="mc"><div class="mn">🥣 No-cook fridge cleanout</div><div class="md">Cereal, granola bars, fruit, yogurt pouches. Use up what's left. No cooking today.</div><span class="mbadge mb-c">Cabin — quick</span></div></div>
+      <div class="mrow"><div class="mtlbl">Lunch</div><div class="mc"><div class="mn">🍽️ Café lunch or road stop</div><div class="md">If Sunday café lunch is running (12:30–2:30 historically), eat on-site as the final group meal. Otherwise a BBQ spot or diner on the way south — dads pick.</div><span class="mbadge mb-r">Café or road</span></div></div>
+    </div>
+  </div>
+  <div class="tip" style="margin-top:10px">💡 Marinate the Saturday chicken thighs in Italian dressing Friday evening — 30 seconds of prep, huge difference in flavor. Foil packs can be prepped and refrigerated ahead of time too.</div>
+</div>
+
+<!-- GROCERY -->
+<div id="grocery" class="tsec">
+  <p style="font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.6">Covers both families for the full weekend. Checks are shared live — when one family checks something off, everyone sees it. Suggested split at the bottom.</p>
+  <div class="pb-wrap"><div class="pb" id="gpb" style="width:0%"></div></div>
+  <div class="plabel" id="gplabel">Loading...</div>
+  <button class="rbtn" onclick="resetGrocery()">↺ Reset all</button>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🥩</span> Meat</div><span class="gcath-c">6 items</span></div>
+    <div class="gcatb open">
+      <div class="gitem" data-gid="m1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Hot dogs</div><div class="gnote">Thu dinner</div></div><div class="gqty">2 packs</div></div>
+      <div class="gitem" data-gid="m2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Bacon</div><div class="gnote">Fri breakfast</div></div><div class="gqty">2 packs</div></div>
+      <div class="gitem" data-gid="m3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Breakfast sausage</div><div class="gnote">Sat burritos</div></div><div class="gqty">2 packs</div></div>
+      <div class="gitem" data-gid="m4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Ground beef (80/20)</div><div class="gnote">Fri smash burgers</div></div><div class="gqty">3 lbs</div></div>
+      <div class="gitem" data-gid="m5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Chicken thighs (bone-in)</div><div class="gnote">Sat dinner — marinate Fri evening</div></div><div class="gqty">~4 lbs</div></div>
+      <div class="gitem" data-gid="m6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Deli turkey + deli ham</div><div class="gnote">Fri lunch subs</div></div><div class="gqty">½ lb each</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🧀</span> Dairy + eggs</div><span class="gcath-c">6 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="d1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Eggs</div><div class="gnote">Fri breakfast + Sat burritos</div></div><div class="gqty">2 dozen</div></div>
+      <div class="gitem" data-gid="d2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Shredded cheddar</div><div class="gnote">Sat burritos + burgers</div></div><div class="gqty">2 bags</div></div>
+      <div class="gitem" data-gid="d3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">American cheese slices</div><div class="gnote">Fri smash burgers</div></div><div class="gqty">1 pack</div></div>
+      <div class="gitem" data-gid="d4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Deli provolone + cheddar</div><div class="gnote">Fri subs</div></div><div class="gqty">¼ lb each</div></div>
+      <div class="gitem" data-gid="d5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Butter</div><div class="gnote">Foil packs, corn, pancakes</div></div><div class="gqty">1 lb</div></div>
+      <div class="gitem" data-gid="d6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Yogurt pouches (kids)</div><div class="gnote">Sun breakfast</div></div><div class="gqty">6–8</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🥖</span> Bread + pantry</div><span class="gcath-c">8 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="b1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Hot dog buns</div><div class="gnote">Thu dinner</div></div><div class="gqty">2 packs</div></div>
+      <div class="gitem" data-gid="b2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Brioche burger buns</div><div class="gnote">Fri smash burgers</div></div><div class="gqty">8–10</div></div>
+      <div class="gitem" data-gid="b3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Hoagie rolls</div><div class="gnote">Fri lunch subs</div></div><div class="gqty">7</div></div>
+      <div class="gitem" data-gid="b4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Flour tortillas (burrito size)</div><div class="gnote">Sat burritos</div></div><div class="gqty">1 pack (10ct)</div></div>
+      <div class="gitem" data-gid="b5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Pancake mix (just-add-water)</div><div class="gnote">Fri breakfast</div></div><div class="gqty">1 box</div></div>
+      <div class="gitem" data-gid="b6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Italian dressing</div><div class="gnote">Chicken marinade Sat</div></div><div class="gqty">1 bottle</div></div>
+      <div class="gitem" data-gid="b7" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Baked beans (canned)</div><div class="gnote">Fri dinner side</div></div><div class="gqty">2 cans</div></div>
+      <div class="gitem" data-gid="b8" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Cereal + granola bars</div><div class="gnote">Sun breakfast + trail snacks</div></div><div class="gqty">1 box + 2 boxes bars</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🌽</span> Produce</div><span class="gcath-c">8 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="p1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Corn on the cob</div><div class="gnote">Fri dinner</div></div><div class="gqty">7 ears</div></div>
+      <div class="gitem" data-gid="p2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Potatoes (Yukon gold or red)</div><div class="gnote">Sat foil packs</div></div><div class="gqty">3 lbs</div></div>
+      <div class="gitem" data-gid="p3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Bell peppers (red + yellow)</div><div class="gnote">Sat dinner grilled</div></div><div class="gqty">3–4</div></div>
+      <div class="gitem" data-gid="p4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Onions</div><div class="gnote">Sat dinner + burger toppings</div></div><div class="gqty">2 large</div></div>
+      <div class="gitem" data-gid="p5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Romaine / salad mix</div><div class="gnote">Sat salad + sub toppings</div></div><div class="gqty">1 large bag</div></div>
+      <div class="gitem" data-gid="p6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Tomatoes</div><div class="gnote">Subs + burgers</div></div><div class="gqty">3</div></div>
+      <div class="gitem" data-gid="p7" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Baby carrots</div><div class="gnote">Thu snack + trail snack</div></div><div class="gqty">1 bag</div></div>
+      <div class="gitem" data-gid="p8" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Fruit (grapes, apples, bananas)</div><div class="gnote">Lunches + snacks</div></div><div class="gqty">mix</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🧃</span> Drinks + snacks</div><span class="gcath-c">7 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="s1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Water (cases)</div><div class="gnote">Riding days — pack in cooler</div></div><div class="gqty">3 cases</div></div>
+      <div class="gitem" data-gid="s2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Gatorade / Liquid IV</div><div class="gnote">Hot riding days — electrolytes</div></div><div class="gqty">12+</div></div>
+      <div class="gitem" data-gid="s3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Juice boxes / Capri Sun</div><div class="gnote">Kids drinks</div></div><div class="gqty">2 packs</div></div>
+      <div class="gitem" data-gid="s4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Coffee + filters or pods</div><div class="gnote">Ask cabin coffee setup when booking</div></div><div class="gqty">1 bag or pods</div></div>
+      <div class="gitem" data-gid="s5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Chips (variety)</div><div class="gnote">Lunches + snacking</div></div><div class="gqty">3–4 bags</div></div>
+      <div class="gitem" data-gid="s6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Trail mix / nuts</div><div class="gnote">Pack for riding days</div></div><div class="gqty">2 bags</div></div>
+      <div class="gitem" data-gid="s7" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Beer / adult beverages</div><div class="gnote">Evening — per family preference</div></div><div class="gqty">per family</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🔥</span> Fire + s'mores</div><span class="gcath-c">4 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="f1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Graham crackers</div><div class="gnote">Thu + Fri nights</div></div><div class="gqty">2 boxes</div></div>
+      <div class="gitem" data-gid="f2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Marshmallows</div></div><div class="gqty">2 bags</div></div>
+      <div class="gitem" data-gid="f3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Hershey's chocolate bars</div></div><div class="gqty">4 bars</div></div>
+      <div class="gitem" data-gid="f4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Roasting sticks / skewers</div><div class="gnote">Bring as backup — cabin may have</div></div><div class="gqty">1 pack</div></div>
+    </div>
+  </div>
+
+  <div class="gcat"><div class="gcath" onclick="toggleCat(this)"><div class="gcath-t"><span style="font-size:18px">🧴</span> Condiments + supplies</div><span class="gcath-c">7 items</span></div>
+    <div class="gcatb">
+      <div class="gitem" data-gid="c1" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Ketchup, mustard, mayo</div><div class="gnote">Burgers + subs</div></div><div class="gqty">1 each</div></div>
+      <div class="gitem" data-gid="c2" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Pickles</div><div class="gnote">Smash burgers</div></div><div class="gqty">1 jar</div></div>
+      <div class="gitem" data-gid="c3" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Salt, pepper, garlic powder</div></div><div class="gqty">small containers</div></div>
+      <div class="gitem" data-gid="c4" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Cooking spray or oil</div></div><div class="gqty">1</div></div>
+      <div class="gitem" data-gid="c5" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Heavy-duty aluminum foil</div><div class="gnote">Sat foil packs — big roll</div></div><div class="gqty">1 large roll</div></div>
+      <div class="gitem" data-gid="c6" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Paper plates, cups, napkins</div></div><div class="gqty">packs</div></div>
+      <div class="gitem" data-gid="c7" onclick="toggleG(this)"><div class="gcheck"><span class="gtick">✓</span></div><div><div class="gname">Dish soap + sponge</div></div><div class="gqty">travel size</div></div>
+    </div>
+  </div>
+  <div class="tip" style="margin-top:8px">🛒 Suggested split: Davis family — meat, dairy, produce. Hornsby family — bread/pantry, drinks/snacks, fire supplies, condiments. Adjust as needed, just coordinate before shopping.</div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="checklist" class="tsec">
+  <p style="font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.6">Checks are shared live. Go through this before leaving.</p>
+  <div class="ckcard">
+    <ul class="cklist">
+      <li data-ckid="ck1" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Call Durhamtown — confirm late Thursday check-in for Davis family + after-hours gate: (706) 486-4603</span></li>
+      <li data-ckid="ck2" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Book both cabins together — near each other, near lodge, 2-bed, kitchen, private bath</span></li>
+      <li data-ckid="ck3" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Confirm café hours for June 19–21 + ask about any weekend events or races</span></li>
+      <li data-ckid="ck4" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Coordinate grocery split between Davis and Hornsby families before shopping</span></li>
+      <li data-ckid="ck5" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Davis family: grocery run done before 4 PM Thursday, fridge items on top of trailer</span></li>
+      <li data-ckid="ck6" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Marinate chicken thighs in Italian dressing Friday evening for Saturday dinner</span></li>
+      <li data-ckid="ck7" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Download trail map from durhamtown.com — share with both families</span></li>
+      <li data-ckid="ck8" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Helmets + goggles confirmed for all 7 riders including both 8-year-olds</span></li>
+      <li data-ckid="ck9" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Extra clothes + towels for mud — double the estimate with two boys involved</span></li>
+      <li data-ckid="ck10" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Basic first aid kit in each family's gear</span></li>
+      <li data-ckid="ck11" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Check Durhamtown Facebook/Instagram before leaving — confirm any weekend events</span></li>
+      <li data-ckid="ck12" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Set group chat — coordinate arrival times and daily 4:15 PM regroup</span></li>
+      <li data-ckid="ck13" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Brief everyone on 4:30 PM trail close — no new loops after 2:30 PM any day</span></li>
+      <li data-ckid="ck14" onclick="toggleCk(this)"><div class="ckcircle"><span class="cktick">✓</span></div><span>Father's Day cards + gifts packed for both dads</span></li>
+    </ul>
+  </div>
+</div>
+
+</main>
+
+<div class="footer">Made for the <strong>Davis &amp; Hornsby families</strong> · Durhamtown Off-Road Resort · Father's Day 2025</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCVIXsmkW1KTCLIo_1E10d8eBzfT-Flf_g",
+    authDomain: "durhamtown-9ae1a.firebaseapp.com",
+    databaseURL: "https://durhamtown-9ae1a-default-rtdb.firebaseio.com",
+    projectId: "durhamtown-9ae1a",
+    storageBucket: "durhamtown-9ae1a.firebasestorage.app",
+    messagingSenderId: "1051511085263",
+    appId: "1:1051511085263:web:7a5ef3a7f8bcbae1783fba"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const tripRef = ref(db, 'durhamtown2025');
+
+  let localState = { grocery: {}, checklist: {} };
+  let saveTimer = null;
+
+  function setSyncStatus(status, msg) {
+    const dot = document.getElementById('sdot');
+    const label = document.getElementById('slabel');
+    dot.className = 'sdot' + (status === 'ok' ? ' ok' : status === 'err' ? ' err' : '');
+    label.textContent = msg;
+  }
+
+  onValue(tripRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      localState = { grocery: data.grocery || {}, checklist: data.checklist || {} };
+    }
+    applyState();
+    setSyncStatus('ok', 'Live — changes sync for everyone');
+  }, (error) => {
+    setSyncStatus('err', 'Connection error — check your internet');
+  });
+
+  function applyState() {
+    document.querySelectorAll('.gitem[data-gid]').forEach(el => {
+      el.classList.toggle('ck', !!localState.grocery[el.dataset.gid]);
+    });
+    document.querySelectorAll('.cklist li[data-ckid]').forEach(el => {
+      const on = !!localState.checklist[el.dataset.ckid];
+      el.classList.toggle('ck', on);
+      const circle = el.querySelector('.ckcircle');
+      const tick = el.querySelector('.cktick');
+      if (circle) { circle.style.background = on ? '#1D9E75' : ''; circle.style.borderColor = on ? '#1D9E75' : ''; }
+      if (tick) tick.style.display = on ? 'block' : 'none';
+    });
+    updateGProgress();
+  }
+
+  function debounceSave() {
+    clearTimeout(saveTimer);
+    setSyncStatus('loading', 'Saving...');
+    saveTimer = setTimeout(() => {
+      update(tripRef, localState)
+        .then(() => setSyncStatus('ok', 'Saved — synced for everyone'))
+        .catch(() => setSyncStatus('err', 'Save failed — check connection'));
+    }, 500);
+  }
+
+  window.toggleG = function(el) {
+    const id = el.dataset.gid;
+    localState.grocery[id] = !localState.grocery[id];
+    el.classList.toggle('ck', localState.grocery[id]);
+    updateGProgress();
+    debounceSave();
+  };
+
+  window.toggleCk = function(el) {
+    const id = el.dataset.ckid;
+    localState.checklist[id] = !localState.checklist[id];
+    const on = localState.checklist[id];
+    el.classList.toggle('ck', on);
+    const circle = el.querySelector('.ckcircle');
+    const tick = el.querySelector('.cktick');
+    if (circle) { circle.style.background = on ? '#1D9E75' : ''; circle.style.borderColor = on ? '#1D9E75' : ''; }
+    if (tick) tick.style.display = on ? 'block' : 'none';
+    debounceSave();
+  };
+
+  window.resetGrocery = function() {
+    localState.grocery = {};
+    document.querySelectorAll('.gitem[data-gid]').forEach(el => el.classList.remove('ck'));
+    updateGProgress();
+    debounceSave();
+  };
+
+  function updateGProgress() {
+    const all = document.querySelectorAll('.gitem[data-gid]').length;
+    const done = Object.values(localState.grocery).filter(Boolean).length;
+    const pct = all ? Math.round((done / all) * 100) : 0;
+    document.getElementById('gpb').style.width = pct + '%';
+    document.getElementById('gplabel').textContent = done + ' of ' + all + ' items checked';
+  }
+</script>
+
+<script>
+  function showSec(id, btn) {
+    document.querySelectorAll('.tsec').forEach(s => s.classList.remove('on'));
+    document.querySelectorAll('.nbtn').forEach(b => b.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    btn.classList.add('on');
+  }
+  function showDay(id, btn) {
+    document.querySelectorAll('.dp').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.dtab').forEach(b => b.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    btn.classList.add('on');
+  }
+  function toggleM(h) { h.nextElementSibling.classList.toggle('open'); }
+  function toggleCat(h) { h.nextElementSibling.classList.toggle('open'); }
+</script>
+
+</body>
+</html>
